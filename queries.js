@@ -43,7 +43,7 @@ const getDataById = (req,res)=>{
     if(!allowTables.includes(tableName)){
         return res.status(404).send('Item Not Found')
     }
-    pool.query(`SELECT * FROM ${tableName} WHERE id = ${id}`)
+    pool.query(`SELECT * FROM ${tableName} WHERE id = ${id};`)
     .then((error,results)=>{
         if(error){
             throw error;
@@ -60,8 +60,8 @@ const addData = (req,res)=>{
     const keys = Object.keys(req.body).join(', ')
     const values = Object.values(req.body)
     const psqlinsert = values.map((key,index)=>`$${index+1}`).join(', ')
-    console.log(`INSERT INTO ${tableName} (${keys}) VALUES (${psqlinsert}) RETURNING *`)
-    pool.query(`INSERT INTO ${tableName} (${keys}) VALUES (${psqlinsert}) RETURNING *`,
+    console.log(`INSERT INTO ${tableName} (${keys}) VALUES (${psqlinsert}) RETURNING *;`)
+    pool.query(`INSERT INTO ${tableName} (${keys}) VALUES (${psqlinsert}) RETURNING *;`,
     values, (error,results)=>{
         if(error){
             throw error;
@@ -70,8 +70,40 @@ const addData = (req,res)=>{
     })
 };
 
+const deleteData = (req,res)=>{
+    const {tableName,id} = req.params
+    if(!allowTables.includes(tableName)){
+        return res.status(404).send('Item Not Found')
+    }
+    pool.query(`DELETE FROM ${tableName} WHERE id = ${id};`)
+    .then((error,results)=>{
+        if(error){
+            throw error;
+        }
+        res.status(200).json(results.rows)
+    });
+};
+
+const updateData = (req,res)=>{
+    const {tableName,id} = req.params
+    if(!allowTables.includes(tableName)){
+        return res.status(404).send('Item Not Found')
+    }
+    const update = req.body
+    const set = Object.entries(set).map(([column,value])=>`${column} = ${value}`).join(', ')
+    pool.query(`UPDATE ${tableName} SET ${set} WHERE id = ${id};`)
+    .then((error,results)=>{
+        if(error){
+            throw error;
+        }
+        res.status(200).json(results.rows)
+    });
+};
+
 module.exports = {
     getData,
     getDataById,
-    addData
+    addData,
+    deleteData,
+    updateData
 }

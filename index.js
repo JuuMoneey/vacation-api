@@ -10,6 +10,8 @@ app.get('/',(req,res)=>res.json({info: 'working'}));
 app.get('/:tableName',db.getData)
 app.get('/:tableName/:id',db.getDataById)
 app.post('/:tableName',db.addData)
+app.delete('/:tableName/:id',db.deleteData)
+app.put('/:tableName',db.updateData)
 app.listen(port, ()=>{
     console.log(`App is running on port ${port}`)
 });
