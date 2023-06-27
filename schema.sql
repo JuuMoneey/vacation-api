@@ -187,7 +187,6 @@ INSERT INTO seasons (season_id, season_name) VALUES (3, 'Fall');
 INSERT INTO seasons (season_id, season_name) VALUES (4, 'Winter');
 
 --Weather Table
-
 INSERT INTO weather (weather_id, weather_type) VALUES (1, 'Sunny');
 INSERT INTO weather (weather_id, weather_type) VALUES (2, 'Rainy');
 INSERT INTO weather (weather_id, weather_type) VALUES (3, 'Cloudy');
