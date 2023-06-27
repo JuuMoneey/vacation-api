@@ -113,7 +113,7 @@ CREATE TABLE match(
 
 
 
-//Destinations Table
+--Destinations Table
 
 INSERT INTO destinations (destination_id, destination_name, coordinates) VALUES (1,'Paris', '48.8566° N, 2.3522° E');
 INSERT INTO destinations (destination_id, destination_name, coordinates) VALUES (2,'New York City', '40.7128° N, 74.0060° W');
@@ -168,7 +168,7 @@ INSERT INTO destinations (destination_id, destination_name, coordinates ) VALUES
 INSERT INTO destinations (destination_id, destination_name, coordinates ) VALUES (51,'Curacao','12.1696° N, 68.9900° W');
 INSERT INTO destinations (destination_id, destination_name, coordinates ) VALUES (52,'British Virgin Islands','18.4207° N, 64.6399° W');
 
-//Categories Table
+--Categories Table
 INSERT INTO categories (category_id, category_name) VALUES (1, 'Beach');
 INSERT INTO categories (category_id, category_name) VALUES (2, 'City');
 INSERT INTO categories (category_id, category_name) VALUES (3, 'Nature');
@@ -180,27 +180,27 @@ INSERT INTO categories (category_id, category_name) VALUES (8, 'Family-Friendly'
 INSERT INTO categories (category_id, category_name) VALUES (9, 'Luxury');
 
 
-//Seasons Table
+--Seasons Table
 INSERT INTO seasons (season_id, season_name) VALUES (1, 'Spring');
 INSERT INTO seasons (season_id, season_name) VALUES (2, 'Summer');
 INSERT INTO seasons (season_id, season_name) VALUES (3, 'Fall');
 INSERT INTO seasons (season_id, season_name) VALUES (4, 'Winter');
 
-//Weather Table
+--Weather Table
 
 INSERT INTO weather (weather_id, weather_type) VALUES (1, 'Sunny');
 INSERT INTO weather (weather_id, weather_type) VALUES (2, 'Rainy');
 INSERT INTO weather (weather_id, weather_type) VALUES (3, 'Cloudy');
 INSERT INTO weather (weather_id, weather_type) VALUES (4, 'Snow');
 
-//Photos Table
+--Photos Table
 INSERT INTO photos (photo_id, date, alt) VALUES ('2023-06-01', 'Beautiful sunset on the beach');
 INSERT INTO photos (photo_id, date, alt) VALUES ('2023-06-05', 'Historic landmark in the city');
 INSERT INTO photos (photo_id, date, alt) VALUES ('2023-06-10', 'Snow-covered mountain peak') ;
 INSERT INTO photos (photo_id, date, alt) VALUES ('2023-06-15', 'Vibrant street art in the alley');
 INSERT INTO photos (photo_id, date, alt) VALUES ('2023-06-20', 'Scenic countryside landscape');
 
-//Attractions Table
+--Attractions Table
 INSERT INTO attractions (attraction_name, general cost) VALUES ('Eiffel Tower', 20)
 INSERT INTO attractions (attraction_name, general cost) VALUES ('Louvre Museum', 18)
 INSERT INTO attractions (attraction_name, general cost) VALUES ('Notre-Dame Cathedral', 15)
@@ -259,44 +259,44 @@ INSERT INTO attractions (attraction_name, general cost) VALUES ('Bitter End Yach
 
 
 
-//Lodging Table
+--Lodging Table
 INSERT INTO lodging (lodging_name, general_cost) VALUES ('Hotel','$$')
 INSERT INTO lodging (lodging_name, general_cost) VALUES ('Resort', '$$$');
 INSERT INTO lodging (lodging_name, general_cost) VALUES ('Airbnb', '$$$');
 
-//Itinerary Table
+--Itinerary Table
 INSERT INTO itinerary (match_id, date) VALUES ()
 
 
 
 
-//Trip Table
+--Trip Table
 INSERT INTO trip (itinerary_id, date) VALUES (1, '2023-09-25')
 INSERT INTO trip (itinerary_id, date) VALUES (2, '2023-12-25')
 INSERT INTO trip (itinerary_id, date) VALUES (3, '2023-11-25')
 
-//Saved Trips Table
+--Saved Trips Table
 INSERT INTO saved trips (trip_name, trip_id, user_id)VALUES ('My Trip', 1, 12345)
 
-//Past Trip Table
+--Past Trip Table
 INSERT INTO pasttrips (trip_id, trip_name, user_id) VALUES (1, 'Paris Trip', 1001)
 INSERT INTO pasttrips (trip_id, trip_name, user_id) VALUES (2, 'New York Trip', 1002)
 INSERT INTO pasttrips (trip_id, trip_name, user_id) VALUES (3, 'Bali Trip', 1002)
 
-//Comments Table
+--Comments Table
 INSERT INTO comments (trip_id, user_id, date) VALUES (1, 1001, '2023-06-23')
 INSERT INTO comments (trip_id, user_id, date) VALUES (2, 1002, '2023-06-23')
 INSERT INTO comments (trip_id, user_id, date) VALUES (3, 1003, '2023-06-23')
 
-// User Photos Table
+-- User Photos Table
 INSERT INTO user_photos (trip_id, user_id, alt, date)VALUES (1, 1001, 'Photo 1', '2023-06-23')
 INSERT INTO user_photos (trip_id, user_id, alt, date)VALUES (2, 1002, 'Photo 2', '2023-06-23')
 INSERT INTO user_photos (trip_id, user_id, alt, date)VALUES (3, 1003, 'Photo 3', '2023-06-23')
 
-//User Table
+--User Table
 INSERT INTO user (user_name, display_name, password, avatar, email)VALUES ('john123', 'John Doe', 'password123', 'avatar.jpg', 'john@example.com')
 INSERT INTO user (user_name, display_name, password, avatar, email)VALUES ('jane456', 'Jane Smith', 'password456', 'avatar.jpg', 'jane@example.com')
 INSERT INTO user (user_name, display_name, password, avatar, email)VALUES ('mark789', 'Mark Johnson', 'password789', 'avatar.jpg', 'mark@example.com')
 
-//Match Table
+--Match Table
 INSERT INTO match (category_id, season_id, destination_id, attraction_id, lodging_id, weather_id, photo_id)VALUES (1, 1, 1, 1, 1, 1, 'photo1.jpg')
