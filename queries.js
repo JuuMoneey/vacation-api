@@ -7,21 +7,29 @@ const pool = new Pool({
     port: 5432,
 });
 const allowTables = [
-    'user',
+    'destinations',
+    'destinations_categories',
+    'categories',
+    'seasons',
+    'destinations_seasons',
+    'weather',
+    'destinations_weather',
+    'photos',
+    'destinations_photos',
+    'attractions',
+    'attractions_photos',
+    'destinations_attractions',
+    'lodging',
+    'lodging_photos',
+    'destinations_lodging',
+    'users',
+    'itinerary',
     'past_trips',
     'saved_trips',
     'trips',
-    'itinerary',
-    'destinations',
-    'attractions',
-    'lodging',
     'match',
-    'photos',
     'user_photos',
     'comments',
-    'seasons',
-    'weather',
-    'categories'
 ]
 
 const getData = (req,res)=>{
