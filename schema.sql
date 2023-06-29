@@ -88,10 +88,10 @@ CREATE TABLE destinations_lodging (
 );
 
 
---User-specific tables
+--User-specific tables, user_id === google id
 
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+    user_id VARCHAR(50) PRIMARY KEY,  
     email VARCHAR(30),
     display_name VARCHAR(30),
     user_photo VARCHAR(30),
@@ -106,25 +106,18 @@ CREATE TABLE itinerary (
     lodging_id INT REFERENCES lodging(lodging_id)
 );
 
---CREATE TABLE trip (
- --   trip_id SERIAL PRIMARY KEY,
- --   itinerary_id INT,
-  --  date DATE,
-  --  FOREIGN KEY (itinerary_id) REFERENCES itinerary (itinerary_id)
---);
-
 CREATE TABLE saved_trips (
     saved_trip_id SERIAL PRIMARY KEY,
     trip_name VARCHAR(30),
     user_id INT REFERENCES users(user_id),
-    trip_id INT REFERENCES trips(trip_id)
+    item_id INT REFERENCES itinerary(item_id)
 );
 
 CREATE TABLE past_trips (
     past_trip_id SERIAL PRIMARY KEY,
     trip_name VARCHAR(30),
     user_id INT REFERENCES users(user_id),
-    trip_id REFERENCES trips(trip_id),
+    item_id REFERENCES itinerary(item_id),
 );
 
 
@@ -302,32 +295,29 @@ INSERT INTO lodging (lodging_id, lodging_name, general_cost) VALUES (DEFAULT, 'R
 INSERT INTO lodging (lodging_id, lodging_name, general_cost) VALUES (DEFAULT, 'Airbnb', '$$$');
 
 --Users Table
-INSERT INTO users (user_id, email, display_name, user_photo)VALUES (DEFAULT, 'ali33@gmail.com', 'John Doe', './avatar.jpg');
-INSERT INTO users (user_id, email, display_name, user_photo)VALUES (DEFAULT, 'jane456@gmail.com', 'Jane Smith', './avatar.jpg');
-INSERT INTO users (user_id, email, display_name, user_photo)VALUES (DEFAULT, 'mark789@gmail.com', 'Mark Johnson', './avatar.jpg');
+INSERT INTO users (user_id, email, display_name, user_photo)VALUES ('googleid1', 'ali33@gmail.com', 'John Doe', './avatar.jpg');
+INSERT INTO users (user_id, email, display_name, user_photo)VALUES ('googleid2', 'jane456@gmail.com', 'Jane Smith', './avatar.jpg');
+INSERT INTO users (user_id, email, display_name, user_photo)VALUES ('googleid3', 'mark789@gmail.com', 'Mark Johnson', './avatar.jpg');
 
---Itinerary Table
---INSERT INTO itinerary (match_id, date) VALUES ()
-
---Trip Table
---INSERT INTO trip (itinerary_id, date) VALUES (1, '2023-09-25')
---INSERT INTO trip (itinerary_id, date) VALUES (2, '2023-12-25')
---INSERT INTO trip (itinerary_id, date) VALUES (3, '2023-11-25')
+--Itinerary Table, attraction_id or lodging_id, both are not necessary each input
+INSERT INTO itinerary (item_id, timeframe, item_description,attraction_id) VALUES (DEFAULT, 'Aug 8-14','Going to Ubud Monkey forest',3,6)
 
 --Saved Trips Table
---INSERT INTO saved trips (trip_name, trip_id, user_id)VALUES ('My Trip', 1, 12345)
+INSERT INTO saved_trips (saved_trip_id, trip_name, user_id, item_id)VALUES (DEFAULT, 'Trip to Bali', 'googleid1', 1)
 
 --Past Trip Table
---INSERT INTO pasttrips (trip_id, trip_name, user_id) VALUES (1, 'Paris Trip', 1001)
---INSERT INTO pasttrips (trip_id, trip_name, user_id) VALUES (2, 'New York Trip', 1002)
-I--NSERT INTO pasttrips (trip_id, trip_name, user_id) VALUES (3, 'Bali Trip', 1002)
+INSERT INTO past_trips (past_trip_id, trip_name, user_id, item_id) VALUES (DEFAULT, 'Paris Trip Day 1', 'googleid2',2)
+INSERT INTO past_trips (past_trip_id, trip_name, user_id, item_id) VALUES (DEFAULT, 'Paris Trip Day 2', 'googleid2',3)
+INSERT INTO past_trips (past_trip_id, trip_name, user_id, item_id) VALUES (DEFAULT, 'Bali Trip', 'googleid3',4)
+
+--Additional Features
 
 --Comments Table
---INSERT INTO comments (trip_id, user_id, date) VALUES (1, 1001, '2023-06-23')
---INSERT INTO comments (trip_id, user_id, date) VALUES (2, 1002, '2023-06-23')
---INSERT INTO comments (trip_id, user_id, date) VALUES (3, 1003, '2023-06-23')
+--INSERT INTO comments (user_id, date, forum_id) VALUES ('googleid1','2023-06-23', 1)
+--INSERT INTO comments (user_id, date, forum_id) VALUES ('googleid2','2023-06-23', 3)
+--INSERT INTO comments (user_id, date, forum_id) VALUES ('googleid3','2023-06-23', 5)
 
 --User Photos Table
---INSERT INTO user_photos (trip_id, user_id, alt, date)VALUES (1, 1001, 'Photo 1', '2023-06-23')
---INSERT INTO user_photos (trip_id, user_id, alt, date)VALUES (2, 1002, 'Photo 2', '2023-06-23')
---INSERT INTO user_photos (trip_id, user_id, alt, date)VALUES (3, 1003, 'Photo 3', '2023-06-23')
+--INSERT INTO user_photos (user_id, alt, date)VALUES (1, 1001, 'Photo 1', '2023-06-23')
+--INSERT INTO user_photos (user_id, alt, date)VALUES (2, 1002, 'Photo 2', '2023-06-23')
+--INSERT INTO user_photos (user_id, alt, date)VALUES (3, 1003, 'Photo 3', '2023-06-23')
