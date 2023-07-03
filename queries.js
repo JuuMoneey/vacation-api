@@ -2,8 +2,8 @@ const Pool = require('pg').Pool;
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'travelapp',
-    password: 'postgres',
+    database: 'traveldb7',
+    password: 'iamttyller',
     port: 5432,
 });
 const allowTables = [
@@ -38,7 +38,7 @@ const getData = (req,res)=>{
         return res.status(404).send('Table Not Found')
     }
     pool.query(`SELECT * FROM ${tableName};`)
-    .then((error, results)=>{
+    .then((results,error)=>{
         if(error){
             throw error;
         }
@@ -52,7 +52,7 @@ const getDataById = (req,res)=>{
         return res.status(404).send('Item Not Found')
     }
     pool.query(`SELECT * FROM ${tableName} WHERE id = ${id};`)
-    .then((error,results)=>{
+    .then((results,error)=>{
         if(error){
             throw error;
         }
@@ -70,7 +70,7 @@ const addData = (req,res)=>{
     const psqlinsert = values.map((key,index)=>`$${index+1}`).join(', ')
     console.log(`INSERT INTO ${tableName} (${keys}) VALUES (${psqlinsert}) RETURNING *;`)
     pool.query(`INSERT INTO ${tableName} (${keys}) VALUES (${psqlinsert}) RETURNING *;`,
-    values, (error,results)=>{
+    values, (error, results)=>{
         if(error){
             throw error;
         }
@@ -84,7 +84,7 @@ const deleteData = (req,res)=>{
         return res.status(404).send('Item Not Found')
     }
     pool.query(`DELETE FROM ${tableName} WHERE id = ${id};`)
-    .then((error,results)=>{
+    .then((results,error)=>{
         if(error){
             throw error;
         }
@@ -100,7 +100,7 @@ const updateData = (req,res)=>{
     const update = req.body
     const set = Object.entries(set).map(([column,value])=>`${column} = ${value}`).join(', ')
     pool.query(`UPDATE ${tableName} SET ${set} WHERE id = ${id};`)
-    .then((error,results)=>{
+    .then((results,error)=>{
         if(error){
             throw error;
         }
