@@ -91,10 +91,10 @@ CREATE TABLE destinations_lodging (
 --User-specific tables, user_id === google id
 
 CREATE TABLE users (
-    id VARCHAR(50) PRIMARY KEY,  
+    id SERIAL PRIMARY KEY, 
+    google_id VARCHAR(50), 
     email VARCHAR(30),
-    name VARCHAR(30),
-    user_photo VARCHAR(30)
+    name VARCHAR(30)
 );
 
 CREATE TABLE itinerary (
@@ -109,14 +109,14 @@ CREATE TABLE itinerary (
 CREATE TABLE saved_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
-    user_id VARCHAR(50) REFERENCES users(id),
+    user_id INT REFERENCES users(id),
     item_id INT REFERENCES itinerary(id)
 );
 
 CREATE TABLE past_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
-    user_id VARCHAR(50) REFERENCES users(id),
+    user_id INT REFERENCES users(id),
     item_id INT REFERENCES itinerary(id)
 );
 
@@ -125,7 +125,7 @@ CREATE TABLE past_trips (
 
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    user_id VARCHAR(50) REFERENCES users(id),
+    user_id INT REFERENCES users(id),
     comment_date DATE
     --forum_id
 );
@@ -133,7 +133,7 @@ CREATE TABLE comments (
 
 CREATE TABLE user_photos (
     id SERIAL PRIMARY KEY,
-    user_id VARCHAR(50) REFERENCES users(id),
+    user_id INT REFERENCES users(id),
     alt VARCHAR(30),
     photo_date DATE
     --forum_id
@@ -295,9 +295,9 @@ INSERT INTO lodging (id, name, general_cost) VALUES (DEFAULT, 'Resort', '$$$');
 INSERT INTO lodging (id, name, general_cost) VALUES (DEFAULT, 'Airbnb', '$$$');
 
 --Users Table
-INSERT INTO users (id, email, name, user_photo)VALUES ('googleid1', 'ali33@gmail.com', 'John Doe', './avatar.jpg');
-INSERT INTO users (id, email, name, user_photo)VALUES ('googleid2', 'jane456@gmail.com', 'Jane Smith', './avatar.jpg');
-INSERT INTO users (id, email, name, user_photo)VALUES ('googleid3', 'mark789@gmail.com', 'Mark Johnson', './avatar.jpg');
+INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid1', 'john321@gmail.com', 'John Doe');
+INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid2', 'jane456@gmail.com', 'Jane Smith');
+INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid3', 'mark789@gmail.com', 'Mark Johnson');
 
 --Itinerary Table, id or id, both are not necessary each input
 INSERT INTO itinerary (id, timeframe, item_description,destination_id,attraction_id) VALUES (DEFAULT, 'Aug 8-14','Going to Ubud Monkey forest',3,6);
