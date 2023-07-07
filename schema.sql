@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS user_photos CASCADE;
 CREATE TABLE destinations (
   id SERIAL PRIMARY KEY,
   name VARCHAR (30),
+  country VARCHAR(30),
   coordinates VARCHAR (30)
 );
 
@@ -183,58 +184,58 @@ CREATE TABLE user_photos (
 
 
 --Destinations
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Paris', '48.8566° N, 2.3522° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'New York City', '40.7128° N, 74.0060° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Bali', '-8.3405° S, 115.0920° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Rome',  '41.9028° N, 12.4964° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Tokyo', '35.6895° N, 139.6917° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Cancun', '21.1619° N, 86.8515° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Sydney', '-33.8651° S, 151.2099° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Cairo', '30.0444° N, 31.2357° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Brazil','-22.9068° S, -43.1729° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Barcelona', '41.3851° N, 2.1734° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Dubai', '25.2048° N, 55.2708° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Hawaii', '21.3069° N, 157.8583° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Thailand','7.8804° N, 98.3923° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'London', '51.5074° N, 0.1278° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'California', '34.0522° N, 118.2437° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Cape Town', '-33.9249° S, 18.4241° E') ;
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Toronto', '43.6519° N, 79.3832° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Mumbai', '19.0760° N, 72.8777° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Bora Bora', '16.5004° S, 151.7415° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Santorini','36.3932° N, 25.4615° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Zanzibar','6.1659° S, 39.1982° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Mexico City','19.4326° N, 99.1332° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Bangkok','13.7563° N, 100.5018° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Venice','45.4408° N, 12.3155° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Havana', '23.1136° N, 82.3666° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Buenos Aires', '34.6037° S, 58.3816° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Seychelles', '4.6796° S, 55.4920° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Marrakech', '31.6295° N, 7.9811° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Seoul', '37.5665° N, 126.9780° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Vienna', '48.2082° N, 16.3738° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Machu Picchu','13.1631° S, 72.5450° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Maldives','3.2028° N, 73.2207° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Singapore', '1.3521° N, 103.8198° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Budapest','47.4979° N, 19.0402° E'); 
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Copenhagen', '55.6761° N, 12.5683° E');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Punta Cana', '18.5820° N, 68.4055° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Bahamas', '25.0343° N, 77.3963° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Montego Bay','18.4762° N, 77.8939° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Aruba','12.5211° N, 69.9683° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Barbados', '13.1939° N, 59.5432° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'St. Thomas', '18.3358° N, 64.8963° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Turks and Caicos Islands', '21.6940° N, 71.7979° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'St. Lucia','13.9094° N, 60.9789° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Cayman Islands','19.3133° N, 81.2546° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Antigua and Barbuda','17.0608° N, 61.7964° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'St. Maarten','18.0425° N, 63.0548° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Anguilla', '18.2206° N, 63.0686° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Grenada', '12.1165° N, 61.6790° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'St. Kitts and Nevis', '17.3434° N, 62.7559° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Bonaire','12.2011° N, 68.2620° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'Curacao','12.1696° N, 68.9900° W');
-INSERT INTO destinations (id, name, coordinates ) VALUES (DEFAULT,'British Virgin Islands','18.4207° N, 64.6399° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Paris', 'France', '48.8566° N, 2.3522° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'New York City', 'United States', '40.7128° N, 74.0060° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Bali', 'Indonesia', '-8.3405° S, 115.0920° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Rome',  'Italy', '41.9028° N, 12.4964° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Tokyo', 'Japan', '35.6895° N, 139.6917° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Cancun', 'Mexico', '21.1619° N, 86.8515° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Sydney', 'Australia', '-33.8651° S, 151.2099° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Cairo', 'Egypt', '30.0444° N, 31.2357° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Rio De Janeiro', 'Brazil', '-22.9068° S, -43.1729° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Barcelona', 'Spain', '41.3851° N, 2.1734° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Dubai', 'United Arab Emirates', '25.2048° N, 55.2708° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Hawaii', 'United States', '21.3069° N, 157.8583° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Phuket', 'Thailand','7.8804° N, 98.3923° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'London', 'United Kingdom', '51.5074° N, 0.1278° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'California', 'United States', '34.0522° N, 118.2437° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Cape Town', 'South Africa', '-33.9249° S, 18.4241° E') ;
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Toronto', 'Canada', '43.6519° N, 79.3832° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Mumbai', 'India', '19.0760° N, 72.8777° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Bora Bora', 'French Polynesia', '16.5004° S, 151.7415° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Santorini', 'Greece', '36.3932° N, 25.4615° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Zanzibar', 'Tanzania', '6.1659° S, 39.1982° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Mexico City', 'Mexico', '19.4326° N, 99.1332° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Bangkok', 'Thailand', '13.7563° N, 100.5018° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Venice', 'Italy', '45.4408° N, 12.3155° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Havana', 'Cuba', '23.1136° N, 82.3666° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Buenos Aires', 'Argentina', '34.6037° S, 58.3816° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Seychelles', 'Seychelles', '4.6796° S, 55.4920° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Marrakech', 'Morocco', '31.6295° N, 7.9811° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Seoul', 'South Korea', '37.5665° N, 126.9780° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Vienna', 'Austria', '48.2082° N, 16.3738° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Machu Picchu', 'Peru', '13.1631° S, 72.5450° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Maldives', 'Maldives', '3.2028° N, 73.2207° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Singapore', 'Singapore', '1.3521° N, 103.8198° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Budapest', 'Hungary', '47.4979° N, 19.0402° E'); 
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Copenhagen', 'Denmark', '55.6761° N, 12.5683° E');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Punta Cana', 'Dominican Republic', '18.5820° N, 68.4055° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Bahamas', 'Bahamas', '25.0343° N, 77.3963° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Montego Bay', 'Jamaica', '18.4762° N, 77.8939° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Aruba', 'Aruba', '12.5211° N, 69.9683° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Barbados', 'Barbados', '13.1939° N, 59.5432° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'St. Thomas', 'US Virgin Islands', '18.3358° N, 64.8963° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Turks and Caicos Islands', 'Turks and Caicos', '21.6940° N, 71.7979° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'St. Lucia', 'St. Lucia', '13.9094° N, 60.9789° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Cayman Islands', 'Cayman Islands', '19.3133° N, 81.2546° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Antigua and Barbuda', 'Antigua and Barbuda', '17.0608° N, 61.7964° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'St. Maarten', 'St. Maarten', '18.0425° N, 63.0548° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Anguilla', 'Anguilla', '18.2206° N, 63.0686° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Grenada', 'Grenada', '12.1165° N, 61.6790° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'St. Kitts and Nevis', 'St. Kitts and Nevis', '17.3434° N, 62.7559° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Bonaire', 'Bonaire', '12.2011° N, 68.2620° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'Curacao', 'Curacao', '12.1696° N, 68.9900° W');
+INSERT INTO destinations (id, name, country, coordinates ) VALUES (DEFAULT,'British Virgin Islands', 'British Virgin Islands', '18.4207° N, 64.6399° W');
 
 --Categories
 INSERT INTO categories (id, name) VALUES (DEFAULT, 'Beach');
