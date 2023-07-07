@@ -10,7 +10,7 @@ app.get('/',(req,res)=>res.json({info: 'working'}));
 app.get('/:tableName',db.getData)
 app.get('/:tableName/:id',db.getDataById)
 app.post('/login/:id',db.validateUser)
-app.post('/trip/:id', db.addToTrip)
+app.post('/trip', db.addToTrip)
 app.post('/:tableName',db.addData)
 app.delete('/:tableName/:id',db.deleteData)
 app.put('/:tableName/:id',db.updateData)

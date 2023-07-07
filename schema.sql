@@ -1,3 +1,28 @@
+DROP TABLE IF EXISTS destinations CASCADE; 
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS destinations_categories CASCADE;
+DROP TABLE IF EXISTS seasons CASCADE;
+DROP TABLE IF EXISTS destinations_seasons CASCADE;
+DROP TABLE IF EXISTS weather CASCADE;
+DROP TABLE IF EXISTS destinations_weather CASCADE;
+DROP TABLE IF EXISTS photos CASCADE;
+DROP TABLE IF EXISTS destinations_photos CASCADE;
+DROP TABLE IF EXISTS attractions CASCADE;
+DROP TABLE IF EXISTS attractions_photos CASCADE;
+DROP TABLE IF EXISTS destinations_attractions CASCADE;
+DROP TABLE IF EXISTS lodging CASCADE;
+DROP TABLE IF EXISTS lodging_photos CASCADE;
+DROP TABLE IF EXISTS destinations_lodging CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS itinerary CASCADE;
+DROP TABLE IF EXISTS past_trips CASCADE;
+DROP TABLE IF EXISTS users_past_trips CASCADE;
+DROP TABLE IF EXISTS saved_trips CASCADE;
+DROP TABLE IF EXISTS users_saved_trips CASCADE;
+DROP TABLE IF EXISTS attractions_trips CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS user_photos CASCADE;
+
 --Destination-specific tables
 
 CREATE TABLE destinations (
@@ -55,8 +80,7 @@ CREATE TABLE attractions(
     id SERIAL PRIMARY KEY,
     name VARCHAR(50),
     general_cost VARCHAR(5),
-    destination_id INT REFERENCES destinations(id),
-    api_id VARCHAR(50)
+    destination_id INT REFERENCES destinations(id)
 );
 
 CREATE TABLE attractions_photos (
@@ -111,7 +135,7 @@ CREATE TABLE itinerary (
 CREATE TABLE saved_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
-    itinerary_id INT REFERENCES itinerary(id)
+    user_id INT REFERENCES users(id)
 );
 
 CREATE TABLE users_saved_trips (
@@ -130,6 +154,12 @@ CREATE TABLE users_past_trips (
     id SERIAL PRIMARY KEY,
     trip_id INT REFERENCES past_trips(id),
     user_id INT REFERENCES users(id)
+);
+
+CREATE TABLE attractions_trips (
+    id SERIAL PRIMARY KEY,
+    attraction_id INT REFERENCES attractions(id),
+    trip_id INT REFERENCES saved_trips(id)
 );
 
 
@@ -409,23 +439,23 @@ INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Vibrant street art in the a
 INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Scenic countryside landscape','https://getwallpapers.com/wallpaper/full/6/2/4/1227459-country-scenery-wallpaper-2560x1440-for-samsung-galaxy.jpg');
 
 --Attractions Table
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT,'Eiffel Tower', '$$$', 1, 'apiid1');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT,'Louvre Museum', '$$$', 1, 'apiid2');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Notre-Dame Cathedral', '$$', 1, 'apiid3');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Statue of Liberty', '$$$$', 2, 'apiid4');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Central Park', '$', 2, 'apiid5');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Ubud Monkey Forest', '$$', 3, 'apiid6');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Tanah Lot Temple', '$', 3, 'apiid7');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Colosseum', '$$$', 4, 'apiid8');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Trevi Fountain', '$', 4, 'apiid9');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Imperial Palace', '$$', 5, 'apiid10');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Chichen Itza', '$$$', 6, 'apiid11');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Cancun Underwater Museum', '$$', 6, 'apiid12');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Sydney Harbour Bridge', '$$', 7, 'apiid13');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Sydney Opera House', '$$$', 7, 'apiid14');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Great Pyramids of Giza', '$$$', 8, 'apiid15');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Khan el-Khalili Bazaar', '$', 8, 'apiid16');
-INSERT INTO attractions(id, name, general_cost, destination_id, api_id) VALUES (DEFAULT, 'Copacabana Beach', '$', 9, 'apiid17');
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT,'Eiffel Tower', '$$$', 1);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT,'Louvre Museum', '$$$', 1);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Notre-Dame Cathedral', '$$', 1);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Statue of Liberty', '$$$$', 2);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Central Park', '$', 2);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Ubud Monkey Forest', '$$', 3);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Tanah Lot Temple', '$', 3);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Colosseum', '$$$', 4);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Trevi Fountain', '$', 4);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Imperial Palace', '$$', 5);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Chichen Itza', '$$$', 6);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Cancun Underwater Museum', '$$', 6);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Sydney Harbour Bridge', '$$', 7);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Sydney Opera House', '$$$', 7);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Great Pyramids of Giza', '$$$', 8);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Khan el-Khalili Bazaar', '$', 8);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Copacabana Beach', '$', 9);
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Christ the Redeemer', '$', 9);
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Park Güell', '$$', 10);
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Sagrada Familia', '$$$', 10);
@@ -537,7 +567,8 @@ INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid3', 'mar
 --INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Sep 8','Paris Trip Day 1, The Louvre', 1, 2);
 
 --Saved Trips Table
---INSERT INTO saved_trips (id, name, itinerary_id) VALUES (DEFAULT, 'Trip to Bali', 1, 1);
+INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Bali', 1);
+INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Paris', 2);
 
 --Matching user id with Saved Trip
 --INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 1)

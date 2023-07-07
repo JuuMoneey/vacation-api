@@ -28,6 +28,7 @@ const allowTables = [
     'users_past_trips',
     'saved_trips',
     'users_saved_trips',
+    'attractions_trips',
     'user_photos',
     'comments',
 ]
@@ -137,20 +138,27 @@ const updateData = (req,res)=>{
 };
 
 const addToTrip = (req,res)=>{
-    const {name, generalCost, destinationId, tripId} = req.params
-    pool.query(`SELECT * FROM attractions WHERE name = ${name};`)
+    const {name, general_cost, destination_id, trip_id} = req.body
+    pool.query(`SELECT * FROM attractions WHERE name = $1;`,[name])
         .then((results) => {
             if (results.rows.length) {
                 res.status(200).json(results.rows)
-                pool.query(`INSERT INTO attractions_trips (id, attraction_id, trip_id) VALUES (DEFAULT, ${results.id}, ${tripId}) RETURNING *;`)
-            } else {
-                pool.query(`INSERT INTO attractions (id, name, general_cost, destination_id) VALUES (DEFAULT, ${name}, ${generalCost}, ${destinationId}) RETURNING *;`)
+                console.log(results.rows)
+                pool.query(`INSERT INTO attractions_trips (id, attraction_id, trip_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, trip_id])
                 .then((results,error)=>{
                     if(error){
                         throw error;
                     }
                     res.status(200).json(results.rows)
-                    pool.query(`INSERT INTO attractions_trips (id, attraction_id, trip_id) VALUES (DEFAULT, ${results.id}, ${tripId}) RETURNING *;`)
+                })
+            } else {
+                pool.query(`INSERT INTO attractions (id, name, general_cost, destination_id) VALUES (DEFAULT, $1, $2, $3) RETURNING *;`, [name,general_cost, destination_id])
+                .then((results,error)=>{
+                    if(error){
+                        throw error;
+                    }
+                    res.status(200).json(results.rows)
+                    pool.query(`INSERT INTO attractions_trips (id, attraction_id, trip_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, trip_id])
                 })
             }
         })
