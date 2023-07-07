@@ -14,9 +14,6 @@ DROP TABLE IF EXISTS lodging CASCADE;
 DROP TABLE IF EXISTS lodging_photos CASCADE;
 DROP TABLE IF EXISTS destinations_lodging CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS itinerary CASCADE;
-DROP TABLE IF EXISTS past_trips CASCADE;
-DROP TABLE IF EXISTS users_past_trips CASCADE;
 DROP TABLE IF EXISTS saved_trips CASCADE;
 DROP TABLE IF EXISTS users_saved_trips CASCADE;
 DROP TABLE IF EXISTS attractions_trips CASCADE;
@@ -115,7 +112,7 @@ CREATE TABLE destinations_lodging (
 );
 
 
---User-specific tables, user_id === google id
+--User-specific tables
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
@@ -124,36 +121,16 @@ CREATE TABLE users (
     name VARCHAR(30)
 );
 
-CREATE TABLE itinerary (
-    id SERIAL PRIMARY KEY,
-    timeframe VARCHAR(30),
-    description VARCHAR(50),
-    destination_id INT REFERENCES destinations(id),
-    attraction_id INT REFERENCES attractions(id),
-    lodging_id INT REFERENCES lodging(id)
-);
-
 CREATE TABLE saved_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
+    date DATE,
     user_id INT REFERENCES users(id)
 );
 
 CREATE TABLE users_saved_trips (
     id SERIAL PRIMARY KEY,
     trip_id INT REFERENCES saved_trips(id),
-    user_id INT REFERENCES users(id)
-);
-
-CREATE TABLE past_trips (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(30),
-    itinerary_id INT REFERENCES itinerary(id)
-);
-
-CREATE TABLE users_past_trips (
-    id SERIAL PRIMARY KEY,
-    trip_id INT REFERENCES past_trips(id),
     user_id INT REFERENCES users(id)
 );
 
@@ -563,20 +540,12 @@ INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid1', 'joh
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid2', 'jane456@gmail.com', 'Jane Smith');
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid3', 'mark789@gmail.com', 'Mark Johnson');
 
---Itinerary Table, id or id, both are not necessary each input
---INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Aug 8-14','Going to Ubud Monkey forest', 3, 6);
---INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Sep 8','Paris Trip Day 1, The Louvre', 1, 2);
-
 --Saved Trips Table
-INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Bali', 1);
-INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Paris', 2);
+INSERT INTO saved_trips (id, name, date, user_id) VALUES (DEFAULT, 'Trip to Bali', '2023-08-09', 1);
+INSERT INTO saved_trips (id, name, date, user_id) VALUES (DEFAULT, 'Trip to Paris', '2023-10-10', 2);
 
 --Matching user id with Saved Trip
 --INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 1)
-
---Past Trip Table
---INSERT INTO past_trips (id, name, user_id, item_id) VALUES (DEFAULT, 'Paris Trip Day 1', 2, 2);
-
 
 --Additional Features
 
