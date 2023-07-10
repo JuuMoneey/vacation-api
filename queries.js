@@ -2,8 +2,8 @@ const Pool = require('pg').Pool;
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'travelapp',
-    password: 'postgres',
+    database: 'traveldb10',
+    password: 'iamttyller',
     port: 5432,
 });
 const allowTables = [
@@ -162,7 +162,18 @@ const addToTrip = (req,res)=>{
                 })
             }
         })
-}
+};
+
+const getTrips = (req,res)=>{
+    const {user_id} = req.params
+    pool.query(`SELECT * FROM saved_trips JOIN attractions_trips ON attractions_trips.trip_id = saved_trips.id JOIN attractions ON attractions.id = attractions_trips.attraction_id WHERE saved_trips.user_id = $1;`,[user_id])
+    .then((results,error)=>{
+        if(error){
+            throw error;
+        }
+        res.status(200).json(results.rows)
+    })
+};
 
 module.exports = {
     getData,
@@ -171,5 +182,6 @@ module.exports = {
     addData,
     deleteData,
     updateData,
-    addToTrip
+    addToTrip,
+    getTrips
 }
