@@ -2,8 +2,8 @@ const Pool = require('pg').Pool;
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'traveldb10',
-    password: 'iamttyller',
+    database: 'travelapp',
+    password: 'postgres',
     port: 5432,
 });
 const allowTables = [
