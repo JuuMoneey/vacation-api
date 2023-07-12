@@ -14,6 +14,9 @@ DROP TABLE IF EXISTS lodging CASCADE;
 DROP TABLE IF EXISTS lodging_photos CASCADE;
 DROP TABLE IF EXISTS destinations_lodging CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS itinerary CASCADE;
+DROP TABLE IF EXISTS past_trips CASCADE;
+DROP TABLE IF EXISTS users_past_trips CASCADE;
 DROP TABLE IF EXISTS saved_trips CASCADE;
 DROP TABLE IF EXISTS users_saved_trips CASCADE;
 DROP TABLE IF EXISTS attractions_trips CASCADE;
@@ -114,7 +117,7 @@ CREATE TABLE destinations_lodging (
 );
 
 
---User-specific tables
+--User-specific tables, user_id === google id
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
@@ -123,16 +126,36 @@ CREATE TABLE users (
     name VARCHAR(30)
 );
 
+CREATE TABLE itinerary (
+    id SERIAL PRIMARY KEY,
+    timeframe VARCHAR(30),
+    description VARCHAR(50),
+    destination_id INT REFERENCES destinations(id),
+    attraction_id INT REFERENCES attractions(id),
+    lodging_id INT REFERENCES lodging(id)
+);
+
 CREATE TABLE saved_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
-    date DATE,
     user_id INT REFERENCES users(id)
 );
 
 CREATE TABLE users_saved_trips (
     id SERIAL PRIMARY KEY,
     trip_id INT REFERENCES saved_trips(id),
+    user_id INT REFERENCES users(id)
+);
+
+CREATE TABLE past_trips (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(30),
+    itinerary_id INT REFERENCES itinerary(id)
+);
+
+CREATE TABLE users_past_trips (
+    id SERIAL PRIMARY KEY,
+    trip_id INT REFERENCES past_trips(id),
     user_id INT REFERENCES users(id)
 );
 
@@ -243,8 +266,74 @@ INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Luxor', 'Egypt', 32.6421, 29.6989, 'https://live.staticflickr.com/65535/33978096998_16ef5d20a1_b.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Samarkand', 'Uzbekistan', 66.9597, 39.6542, 'https://live.staticflickr.com/4009/4585451018_86618345c8.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Astana', 'Kazakhstan', 71.4460, 51.1801, 'https://live.staticflickr.com/8491/8326447843_03906fef01_b.jpg');
-
-
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Wadi Rum', 'Jordan', 35.4358, 29.6225, 'https://live.staticflickr.com/4060/4259380067_e6e466cab7.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Sedona', 'United States', -111.7608, 34.8710, 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Cathedral_Rock_at_Red_Rock_Crossing.jpg/1200px-Cathedral_Rock_at_Red_Rock_Crossing.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Ushuaia', 'Argentina', -68.3073, -54.8069, 'https://2.bp.blogspot.com/-RGym3W9qpVE/VQLMsOoem_I/AAAAAAAAV5E/sRiPhF5wWTE/s1600/Ushuaia%2B%E2%80%93%2Bthe%2BWorld%E2%80%99s%2BSouthernmost%2BCity%2BFound%2Bin%2BArgentina.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Puerto Montt', 'Chile', -72.9396, -41.4718, 'https://www.shoreexcursionsgroup.com/img/tour/SAMNMONVAR-2.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Santiago', 'Chile', -70.6505, -33.4378, 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Santiago_en_invierno.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Hong Kong', 'China', 114.1628, 22.2793, 'https://ak.picdn.net/shutterstock/videos/31907872/thumb/8.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Shanghai', 'China', 121.4890, 31.2252, 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Hazy_Lujiazui_-_PuDong%2C_Shanghai.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Lisbon', 'Portugal', -9.1366, 38.7078, 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Lisbon_09882_Lisboa_Pra%C3%A7a_don_Pedro_2006_Luca_Galuzzi.jpg' );
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Moab', 'United States', -109.5462, 38.5738, 'https://www.maxpixel.net/static/photo/1x/Scenery-Desert-Red-Rocks-Arid-Moab-Utah-Sandstone-2741025.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Himachal Pradesh', 'India', 77.1828, 31.9292, 'https://upload.wikimedia.org/wikipedia/commons/3/33/Shimla_Southern_Side_of_Ridge.JPG');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Costa Rica', 'Costa Rica', -84.0796, 9.9325, 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Arenal_Volcano_-_Costa_Rica_-_by_Ardyiii.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Tabriz', 'Iran', 46.2961, 38.0739, 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Carpet_Bazaar_of_Tabriz.JPG/1024px-Carpet_Bazaar_of_Tabriz.JPG');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Abu Dhabi', 'United Arab Emirates', 54.3878, 24.4221, 'https://c.pxhere.com/photos/4a/d6/abu_dhabi_uae_mosque-913725.jpg!d');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'El Nido', 'Philippines', 119.3905, 11.1800, 'https://live.staticflickr.com/7084/27160278403_ca0d22fdb4_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Fiji', 'Fiji', 179.0123, -18.1234, 'https://www.wondermondo.com/wp-content/uploads/2017/10/Navala.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Montreal', 'Canada', -73.5698, 45.5032, 'https://c.pxhere.com/photos/1b/54/old_montreal_downtown_montreal_canada_building_city_architecture_cityscape-1080663.jpg!d');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Monaco', 'Monaco', 7.4246, 43.7384, 'https://upload.wikimedia.org/wikipedia/commons/4/46/MONACO_by_creactions.jpg'  );
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Malta', 'Malta', 14.5137, 35.8990, 'https://www.wondermondo.com/wp-content/uploads/2017/09/AzureWindow.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Nice', 'France', 7.2684, 43.7009, 'https://c4.wallpaperflare.com/wallpaper/895/24/1008/villefranche-sur-mer-provence-alpes-cote-d-azur-arrondissement-de-nice-hd-wallpaper-preview.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Gibraltar', 'Gibraltar', -5.3536, 36.1408, 'https://www.populationdata.net/wp-content/uploads/2016/05/gibraltar.png');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Edinburgh', 'United Kingdom', -3.1884, 55.9533, 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Edinburgh_Castle_A255786_037.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Ireland', 'Ireland', -6.2602, 53.3498, 'https://pixnio.com/free-images/nature-landscapes/field/ireland-fields-sky-clouds.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Bergen', 'Norway', 5.3259, 60.3943, 'https://1.bp.blogspot.com/-KDn-atg5zuA/WU1aHG1MQtI/AAAAAAAAKXI/cVrOJpx4xq4OgaYgyZ2-xSUtp5kC0q9vgCLcBGAs/s1600/Bergen%2BNoruega.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Iceland', 'Iceland', -21.9422, 64.1460, 'https://3.bp.blogspot.com/-lyiW0EfYhcI/VLpSRe3LPHI/AAAAAAAATo0/XYDsgoWEmP0/s1600/Discover%2BVatnaj%C3%B6kull%2B%E2%80%93%2Bthe%2BLargest%2BGlacier%2Bin%2BIceland.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Nagano', 'Japan', 138.0319, 36.1144, 'https://wikitravel.org/upload/shared/a/af/Snow_monkey%40Yamanouchi%2CNagano.JPG');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Tromso', 'Norway', 18.9548, 69.6493, 'https://1.bp.blogspot.com/-M5ZtmAJha-U/VHR91D2c6SI/AAAAAAAARnI/aJSUvcGO_wk/s1600/Tromso%E2%80%93Your%2BNext%2BFavorite%2BWinter%2BDestination%2C%2BNorway.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Victoria Falls', 'Zambia', 25.8539, -17.9244, 'https://live.staticflickr.com/4630/39669397992_27bfd31f80.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Foz do Igaucu', 'Brazil', -54.5858, -25.5401, 'https://live.staticflickr.com/819/40154957535_5c55a74b3a_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Skeleton Coast', 'Namibia', 12.6782, -19.2749, 'https://live.staticflickr.com/8744/17085246687_3079aaf372_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Kilimanjaro', 'Tanzania', 37.3540, -3.0764, 'https://elsaelsi.files.wordpress.com/2010/07/kilimanjaro1.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Agra', 'India', 78.0099, 27.1753, 'https://upload.wikimedia.org/wikipedia/commons/8/84/Taj_Mahal-04.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Cabo San Lucas', 'Mexico', -109.9201, 22.8939, 'https://www.mtievents.com/wp-content/uploads/2016/02/Cabo-San-Lucas.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Cozumel', 'Mexico', -86.9203, 20.4318, 'https://img.theculturetrip.com/1440x/smart/wp-content/uploads/2015/11/17736787475_3d953da365_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Puerto Vallarta', 'Mexico', -105.2203, 20.6407, 'https://i0.wp.com/trendingtravelnews.com/wp-content/uploads/2018/08/unnamed-11.jpg?w=1920&ssl=1');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Cabo Verde', 'Cabo Verde', -24.0084, 16.0001, 'https://cdn.holidayguru.es/wp-content/uploads/2018/03/Tarrafal-beach-in-Santiago-island-in-Cape-Verde-iStock_000074123707_Large-2.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Tenerife', 'Spain', -16.6214, 28.2936, 'https://www.hotholidays.co.uk/image/original/destination/1527613186.9069_shutterstock_701679028.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Ponta Delgada', 'Portugal', -25.6684, 37.7394, 'https://i2.wp.com/www.decoranddineblog.com/wp-content/uploads/2018/01/Azores-Flores-Island.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Cusco', 'Peru', -71.9788, -13.5168, 'https://www.roadaffair.com/wp-content/uploads/2017/10/sunrise-cusco-peru-shutterstock_354971309.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Zermatt', 'Switzerland', 7.7491, 46.0207, 'http://2.bp.blogspot.com/-hAnpo8RW9T8/VddC9vmKx_I/AAAAAAAACKk/qiHXwDKA_lg/s1600/zermatt-valley-switzerland.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Faroe Islands', 'United Kingdom', -7.0323, 62.0449, 'https://media.cntraveler.com/photos/55ad25b50121edec25705bb7/master/pass/faroe-islands-denmark.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Galapagos', 'Ecuador', -90.3639, -0.6288, 'https://c0.wallpaperflare.com/preview/145/230/358/ecuador-galapagos-islands.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Juneau', 'United States', -134.4197, 58.3019, 'https://www.goodfreephotos.com/albums/united-states/alaska/juneau/landscape-of-mountains-and-fjords-under-clouds-around-juneau-alaska.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Naples', 'Italy', 14.2488, 40.8359, 'https://3.bp.blogspot.com/-NkuZidpI2ww/U_Sc-iBnTYI/AAAAAAAAOnQ/7N4BVpAHxe0/s1600/5.%2BPositano-%2BTop%2B10%2BItalian%2BCoastal%2BSites.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Milan', 'Italy', 9.1905, 45.4668, 'https://susannehultman.se/wp-content/uploads/2016/04/044milano.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Split', 'Croatia', 16.4402, 43.5081, 'https://foto.wuestenigel.com/wp-content/uploads/api/split-harbour-croatia.jpeg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Prague', 'Czechia', 14.4213, 50.0874, 'https://www.publicdomainpictures.net/pictures/210000/velka/old-town-prague.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Munich', 'Germany', 11.5753, 48.1371, 'https://ak.picdn.net/shutterstock/videos/1063854487/thumb/1.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Porto', 'Portugal', -8.6291, 41.1579, 'https://c2.staticflickr.com/6/5205/5253473681_da9b0d1366_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Berlin', 'Germany', 13.3889, 52.5170, 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Brandenburger_Tor_abends.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Crete', 'Greece', 25.1343, 35.3400, 'https://2.bp.blogspot.com/-JK1sql5Gwn8/VVmriQYTFbI/AAAAAAAAaK4/lyo4e1Isay4/s1600/The%2BRomantic%2BOld%2BTown%2Bof%2BChania%2Bin%2BCrete%2C%2BHellas%2B(Greece)!!!.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Denali', 'United States', -151.0062, 63.0691, 'https://www.viaggi-usa.it/wp-content/uploads/2019/04/Denali-National-Park-Cosa-Vedere.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Quito', 'Ecuador', -78.5123, -0.2202, 'https://live.staticflickr.com/7521/16117255152_4e23734970_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Sao Paolo', 'Brazil', -46.6334, -23.5507, 'https://upload.wikimedia.org/wikipedia/commons/d/d9/S%C3%A3o_Paulo_City.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Amsterdam', 'Netherlands', 4.8936, 52.3728, 'https://www.photo-paysage.com/albums/userpics/10001/normal_Balade_le_long_des_canaux_d_Amsterdam_-11.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Cyprus', 'Cyprus', 33.1451, 34.9823, 'https://c0.wallpaperflare.com/preview/1003/576/21/cyprus-larnaca-town-beach-promenade.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Penang', 'Malaysia', 100.2559, 5.4065, 'https://c1.staticflickr.com/5/4087/4835033844_6c01bc32a0_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'San Diego', 'United States', -117.1628, 32.7174, 'https://c1.staticflickr.com/3/2059/2063809562_855e54ff47_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Bocas del Toro', 'Panama', -82.1284, 9.3041, 'https://live.staticflickr.com/2221/2298604063_87234e0945_b.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Washington D.C.', 'United States', -77.0366, 38.8949, 'https://c.pxhere.com/photos/ac/df/sunset_memorial_wwii_lighting_landmark_monument_washington_dc-585739.jpg!s');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Las Vegas', 'United States', -115.1485, 36.1673, 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Las_Vegas_89.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Dubrovnik', 'Croatia', 18.0937, 42.6500, 'https://photos.travellerspoint.com/244804/large_Dubrovnik.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Palma de Mallorca', 'Spain', 2.6502, 39.5696, 'https://live.staticflickr.com/65535/32825924657_be377f5221.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Corsica', 'France', 9.0684, 42.1881, 'http://1.bp.blogspot.com/-q7wLbOrhamM/TbRonyQ71uI/AAAAAAAAAHg/ieQAJ3ou0p0/s1600/Fortress+at+Bonifacio+Corsica.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Stockholm', 'Sweden', 18.0711, 59.3251, 'https://www.tripsavvy.com/thmb/o1zQwCZerDnBl0c_8gyKidJdqeA=/2121x1414/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-679622736-bd006ea055424a868f37b1d253aa1fdb.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Nairobi', 'Kenya', 36.8219, -1.2921, 'https://www.silverbirdsafari-africa.com/blog/wp-content/uploads/2015/12/Mt.-kenya-national-park.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Pitcairn Island','Pitcairn Island', -130.1018, -25.0658, 'https://upload.wikimedia.org/wikipedia/commons/4/49/Pitcairn_Island.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Easter Island','Chile', -109.3496, -27.1259, 'http://brewminate.com/wp-content/uploads/2018/01/011818-43-Easter-Island-Rapa-Nui-History-Anthropology.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Christmas Island', 'Australia', 105.6173, -10.4912, 'https://fishofgold.files.wordpress.com/2013/11/christmas-island-red-crab_24694_600x450.jpg?w=940');
 
 
 --Categories
@@ -649,6 +738,10 @@ INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid1', 'joh
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid2', 'jane456@gmail.com', 'Jane Smith');
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid3', 'mark789@gmail.com', 'Mark Johnson');
 
+--Itinerary Table, id or id, both are not necessary each input
+--INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Aug 8-14','Going to Ubud Monkey forest', 3, 6);
+--INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Sep 8','Paris Trip Day 1, The Louvre', 1, 2);
+
 --Saved Trips Table
 INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Bali', 1);
 INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Paris', 2);
@@ -659,6 +752,10 @@ INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 1 , 1
 
 --Matching user id with Saved Trip
 --INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 1)
+
+--Past Trip Table
+--INSERT INTO past_trips (id, name, user_id, item_id) VALUES (DEFAULT, 'Paris Trip Day 1', 2, 2);
+
 
 --Additional Features
 
