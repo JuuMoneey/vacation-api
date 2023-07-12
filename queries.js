@@ -1,8 +1,8 @@
 const Pool = require('pg').Pool;
 const pool = new Pool({
     user: 'postgres',
-    host: 'localhost',
-    database: 'travelApp',
+    host: 'travelapp.cpwlfcyouart.us-east-1.rds.amazonaws.com',
+    database: 'travelapp',
     password: 'postgres',
     port: 5432,
 });
