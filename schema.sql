@@ -45,51 +45,11 @@ CREATE TABLE destinations_categories (
     category_id INT REFERENCES categories(id)
 );
 
-CREATE TABLE seasons (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(30)
-);
-
-CREATE TABLE destinations_seasons (
-    id SERIAL PRIMARY KEY,
-    destination_id INT REFERENCES destinations(id),
-    season_id INT REFERENCES seasons(id)
-);
-
-CREATE TABLE weather (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(30)
-);
-
-CREATE TABLE destinations_weather (
-    id SERIAL PRIMARY KEY,
-    destination_id INT REFERENCES destinations(id),
-    weather_id INT REFERENCES weather(id)
-);
-
-CREATE TABLE photos (
-    id SERIAL PRIMARY KEY,
-    link VARCHAR(500),
-    alt VARCHAR(100)
-);
-
-CREATE TABLE destinations_photos (
-    id SERIAL PRIMARY KEY,
-    destination_id INT REFERENCES destinations(id),
-    photo_id INT REFERENCES photos(id)
-);
-
 CREATE TABLE attractions(
     id SERIAL PRIMARY KEY,
     name VARCHAR(50),
     general_cost VARCHAR(5),
     destination_id INT REFERENCES destinations(id)
-);
-
-CREATE TABLE attractions_photos (
-    id SERIAL PRIMARY KEY,
-    attraction_id INT REFERENCES attractions(id),
-    photo_id INT REFERENCES photos(id)
 );
 
 CREATE TABLE destinations_attractions (
@@ -98,26 +58,7 @@ CREATE TABLE destinations_attractions (
     attraction_id INT REFERENCES attractions(id)
 );
 
-CREATE TABLE lodging (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(30),
-    general_cost VARCHAR(5)
-);
-
-CREATE TABLE lodging_photos (
-    id SERIAL PRIMARY KEY,
-    lodging_id INT REFERENCES lodging(id),
-    photo_id INT REFERENCES photos(id)
-);
-
-CREATE TABLE destinations_lodging (
-    id SERIAL PRIMARY KEY,
-    destination_id INT REFERENCES destinations(id),
-    lodging_id INT REFERENCES lodging(id)
-);
-
-
---User-specific tables, user_id === google id
+--User-specific tables
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
@@ -126,19 +67,12 @@ CREATE TABLE users (
     name VARCHAR(30)
 );
 
-CREATE TABLE itinerary (
-    id SERIAL PRIMARY KEY,
-    timeframe VARCHAR(30),
-    description VARCHAR(50),
-    destination_id INT REFERENCES destinations(id),
-    attraction_id INT REFERENCES attractions(id),
-    lodging_id INT REFERENCES lodging(id)
-);
-
 CREATE TABLE saved_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
-    user_id INT REFERENCES users(id)
+    destination_id INT REFERENCES destinations(id),
+    user_id INT REFERENCES users(id),
+    date DATE
 );
 
 CREATE TABLE users_saved_trips (
@@ -147,43 +81,11 @@ CREATE TABLE users_saved_trips (
     user_id INT REFERENCES users(id)
 );
 
-CREATE TABLE past_trips (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(30),
-    itinerary_id INT REFERENCES itinerary(id)
-);
-
-CREATE TABLE users_past_trips (
-    id SERIAL PRIMARY KEY,
-    trip_id INT REFERENCES past_trips(id),
-    user_id INT REFERENCES users(id)
-);
-
 CREATE TABLE attractions_trips (
     id SERIAL PRIMARY KEY,
     attraction_id INT REFERENCES attractions(id),
     trip_id INT REFERENCES saved_trips(id)
 );
-
-
---Additional features
-
-CREATE TABLE comments (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
-    comment_date DATE,
-    trip_id INT REFERENCES past_trips(id)
-);
-
-
-CREATE TABLE user_photos (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
-    alt VARCHAR(30),
-    photo_date DATE,
-    trip_id INT REFERENCES past_trips(id)
-);
-
 
 --Destinations
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Paris', 'France', 2.3522, 48.8566, 'https://wikitravel.org/upload/shared/6/6f/Paris_Banner.jpg');
@@ -520,34 +422,6 @@ INSERT INTO destinations_categories (id, destination_id, category_id) VALUES (DE
 INSERT INTO destinations_categories (id, destination_id, category_id) VALUES (DEFAULT, 55, 5);
 INSERT INTO destinations_categories (id, destination_id, category_id) VALUES (DEFAULT, 55, 6);
 
---Seasons Table
-INSERT INTO seasons (id, name) VALUES (DEFAULT, 'Spring');
-INSERT INTO seasons (id, name) VALUES (DEFAULT, 'Summer');
-INSERT INTO seasons (id, name) VALUES (DEFAULT, 'Fall');
-INSERT INTO seasons (id, name) VALUES (DEFAULT, 'Winter');
-
---Adding Best Seasons to Visit For Each Destination
-INSERT INTO destinations_seasons (id, destination_id, season_id) VALUES (DEFAULT, 1, 3);
-
---Weather Table
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Sunny');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Rain');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Cloudy');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Snow');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Humid');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Dry');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Cold');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Hot');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Warm');
-INSERT INTO weather (id, name) VALUES (DEFAULT, 'Cool');
-
---Photos Table
-INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Beautiful sunset on the beach', 'https://wallpapercave.com/wp/wp4100958.jpg');
-INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Historic landmark', 'https://static3.bigstockphoto.com/3/2/2/large1500/223766422.jpg');
-INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Snow-covered mountain peak', 'https://images.pexels.com/photos/618842/pexels-photo-618842.jpeg?auto=compress&cs=tinysrgb&h=650&w=940') ;
-INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Vibrant street art in the alley','https://jooinn.com/images/street-art-1.jpg');
-INSERT INTO photos (id, alt, link) VALUES (DEFAULT, 'Scenic countryside landscape','https://getwallpapers.com/wallpaper/full/6/2/4/1227459-country-scenery-wallpaper-2560x1440-for-samsung-galaxy.jpg');
-
 --Attractions Table
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT,'Eiffel Tower', '$$$', 1);
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT,'Louvre Museum', '$$$', 1);
@@ -669,6 +543,13 @@ INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT,
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Pigeon Rocks', '$', 69);
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Jaffa Old City', '$', 70);
 INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Camel Market', '$', 70);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Waiheke Island', '$$$', 71);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Sky Tower', '$$$', 71);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Uluru-Kata Tjuta National Park', '$$$', 72);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Alice Springs Desert Park', '$$', 72);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Royal Botanic Gardens', '$', 73);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Queen Victoria Market', '$', 73);
+INSERT INTO attractions(id, name, general_cost, destination_id) VALUES (DEFAULT, 'Calanguta Beach', '$', 74);
 
 
 --Destinations_Attractions Match Table
@@ -728,43 +609,23 @@ INSERT INTO destinations_attractions(id, destination_id, attraction_id) VALUES (
 INSERT INTO destinations_attractions(id, destination_id, attraction_id) VALUES (DEFAULT, 52,54);
 INSERT INTO destinations_attractions(id, destination_id, attraction_id) VALUES (DEFAULT, 52,55);
 
---Lodging Table
-INSERT INTO lodging (id, name, general_cost) VALUES (DEFAULT, 'Hotel','$$');
-INSERT INTO lodging (id, name, general_cost) VALUES (DEFAULT, 'Resort', '$$$');
-INSERT INTO lodging (id, name, general_cost) VALUES (DEFAULT, 'Airbnb', '$$$');
-
 --Users Table
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid1', 'john321@gmail.com', 'John Doe');
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid2', 'jane456@gmail.com', 'Jane Smith');
 INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid3', 'mark789@gmail.com', 'Mark Johnson');
 
---Itinerary Table, id or id, both are not necessary each input
---INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Aug 8-14','Going to Ubud Monkey forest', 3, 6);
---INSERT INTO itinerary (id, timeframe, description, destination_id, attraction_id) VALUES (DEFAULT, 'Sep 8','Paris Trip Day 1, The Louvre', 1, 2);
-
 --Saved Trips Table
-INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Bali', 1);
-INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Paris', 2);
-INSERT INTO saved_trips (id, name, user_id) VALUES (DEFAULT, 'Trip to Singapore',1);
+INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Bali', 3, 1, '2020-08-15');
+INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Paris', 1, 2, '2023-08-11');
+INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Singapore', 33, 1, '2024-03-25');
 
 --Attractions-Trips Table
-INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 1 , 1);
+INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 1, 2);
+INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 2, 2);
+INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 3, 2);
+INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 8, 1);
 
 --Matching user id with Saved Trip
---INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 1)
-
---Past Trip Table
---INSERT INTO past_trips (id, name, user_id, item_id) VALUES (DEFAULT, 'Paris Trip Day 1', 2, 2);
-
-
---Additional Features
-
---Comments Table
---INSERT INTO comments (user_id, date, forum_id) VALUES ('googleid1','2023-06-23', 1)
---INSERT INTO comments (user_id, date, forum_id) VALUES ('googleid2','2023-06-23', 3)
---INSERT INTO comments (user_id, date, forum_id) VALUES ('googleid3','2023-06-23', 5)
-
---User Photos Table
---INSERT INTO user_photos (user_id, alt, date)VALUES (1, 1001, 'Photo 1', '2023-06-23')
---INSERT INTO user_photos (user_id, alt, date)VALUES (2, 1002, 'Photo 2', '2023-06-23')
---INSERT INTO user_photos (user_id, alt, date)VALUES (3, 1003, 'Photo 3', '2023-06-23')
+INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 1);
+INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 2, 2);
+INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 3, 1);
