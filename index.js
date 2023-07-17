@@ -7,7 +7,7 @@ const port = 3030;
 app.use(cors());
 app.use(express.json());
 app.get('/',(req,res)=>res.json({info: 'working'}));
-app.get('/getTrips/:user_id', db.getTrips)
+app.get('/getTrips/:id', db.getTrips)
 app.get('/:tableName',db.getData)
 app.get('/:tableName/:id',db.getDataById)
 app.post('/login/:id',db.validateUser)

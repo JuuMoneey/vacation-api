@@ -10,27 +10,12 @@ const allowTables = [
     'destinations',
     'destinations_categories',
     'categories',
-    'seasons',
-    'destinations_seasons',
-    'weather',
-    'destinations_weather',
-    'photos',
-    'destinations_photos',
     'attractions',
-    'attractions_photos',
     'destinations_attractions',
-    'lodging',
-    'lodging_photos',
-    'destinations_lodging',
     'users',
-    'itinerary',
-    'past_trips',
-    'users_past_trips',
     'saved_trips',
     'users_saved_trips',
     'attractions_trips',
-    'user_photos',
-    'comments',
 ]
 
 const getData = (req,res)=>{
@@ -48,10 +33,11 @@ const getData = (req,res)=>{
 };
 
 const getDataById = (req,res)=>{
-    const {tableName, id} = req.params
+    let {tableName, id} = req.params
     if(!allowTables.includes(tableName)){
         return res.status(404).send('Table Not Found')
     }
+    if(tableName==='users') id = `'${id}'`
     pool.query(`SELECT * FROM ${tableName} WHERE id = ${id};`)
     .then((results,error)=>{
         if(error){
@@ -83,7 +69,7 @@ const addData = (req,res)=>{
 
 const validateUser = (req, res) => {
     const { id } = req.params;
-    pool.query(`SELECT * FROM users WHERE google_id = $1;`, [id])
+    pool.query(`SELECT * FROM users WHERE id = $1;`, [id])
         .then((results) => {
             if (results.rows.length) {
                 res.status(200).json(results.rows)

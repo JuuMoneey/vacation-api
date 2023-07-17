@@ -61,24 +61,25 @@ CREATE TABLE destinations_attractions (
 --User-specific tables
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY, 
-    google_id VARCHAR(50), 
+    id VARCHAR(100) PRIMARY KEY, 
     email VARCHAR(30),
-    name VARCHAR(30)
+    name VARCHAR(30),
+    given_name VARCHAR(30),
+    image_url VARCHAR(200)
 );
 
 CREATE TABLE saved_trips (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30),
     destination_id INT REFERENCES destinations(id),
-    user_id INT REFERENCES users(id),
+    user_id VARCHAR REFERENCES users(id),
     date DATE
 );
 
 CREATE TABLE users_saved_trips (
     id SERIAL PRIMARY KEY,
     trip_id INT REFERENCES saved_trips(id),
-    user_id INT REFERENCES users(id)
+    user_id VARCHAR REFERENCES users(id)
 );
 
 CREATE TABLE attractions_trips (
@@ -207,7 +208,7 @@ INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Ponta Delgada', 'Portugal', -25.6684, 37.7394, 'https://i2.wp.com/www.decoranddineblog.com/wp-content/uploads/2018/01/Azores-Flores-Island.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Cusco', 'Peru', -71.9788, -13.5168, 'https://www.roadaffair.com/wp-content/uploads/2017/10/sunrise-cusco-peru-shutterstock_354971309.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Zermatt', 'Switzerland', 7.7491, 46.0207, 'http://2.bp.blogspot.com/-hAnpo8RW9T8/VddC9vmKx_I/AAAAAAAACKk/qiHXwDKA_lg/s1600/zermatt-valley-switzerland.jpg');
-INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Faroe Islands', 'United Kingdom', -7.0323, 62.0449, 'https://media.cntraveler.com/photos/55ad25b50121edec25705bb7/master/pass/faroe-islands-denmark.jpg');
+INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Faroe Islands', 'Denmark', -7.0323, 62.0449, 'https://media.cntraveler.com/photos/55ad25b50121edec25705bb7/master/pass/faroe-islands-denmark.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Galapagos', 'Ecuador', -90.3639, -0.6288, 'https://c0.wallpaperflare.com/preview/145/230/358/ecuador-galapagos-islands.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Juneau', 'United States', -134.4197, 58.3019, 'https://www.goodfreephotos.com/albums/united-states/alaska/juneau/landscape-of-mountains-and-fjords-under-clouds-around-juneau-alaska.jpg');
 INSERT INTO destinations (id, name, country, longitude, latitude, photo ) VALUES (DEFAULT,'Naples', 'Italy', 14.2488, 40.8359, 'https://3.bp.blogspot.com/-NkuZidpI2ww/U_Sc-iBnTYI/AAAAAAAAOnQ/7N4BVpAHxe0/s1600/5.%2BPositano-%2BTop%2B10%2BItalian%2BCoastal%2BSites.jpg');
@@ -610,14 +611,19 @@ INSERT INTO destinations_attractions(id, destination_id, attraction_id) VALUES (
 INSERT INTO destinations_attractions(id, destination_id, attraction_id) VALUES (DEFAULT, 52,55);
 
 --Users Table
-INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid1', 'john321@gmail.com', 'John Doe');
-INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid2', 'jane456@gmail.com', 'Jane Smith');
-INSERT INTO users (id, google_id, email, name)VALUES (DEFAULT, 'googleid3', 'mark789@gmail.com', 'Mark Johnson');
+INSERT INTO users (id, email, name, given_name)VALUES ('googleid1', 'john321@gmail.com', 'John Doe', 'John');
+INSERT INTO users (id, email, name, given_name)VALUES ('googleid2', 'jane456@gmail.com', 'Jane Smith', 'Jane');
+INSERT INTO users (id, email, name, given_name)VALUES ('googleid3', 'mark789@gmail.com', 'Mark Johnson', 'Mark');
+INSERT INTO users (id, email, name, given_name, image_url)VALUES ('105855342383549276574', 'ericdirr92@gmail.com', 'Eric Dirr', 'Eric', 'https://lh3.googleusercontent.com/a/AAcHTtdsgOzGN0sS6h44hyluU65sQxkVc2J9bWqolbDGhN5d=s96-c');
+INSERT INTO users (id, email, name, given_name, image_url)VALUES ('115213608802180447633', 'dayanasenat@gmail.com', 'Dayana Senat', 'Dayana', 'https://lh3.googleusercontent.com/a/AAcHTtdkUWFhTwSLvV-WY2d0ucLyC7di36gotsckXTVbODZVQco=s96-c');
+INSERT INTO users (id, email, name, given_name, image_url)VALUES ('109872714042791085100', 'asadrm63@gmail.com', 'Asadur Rahman', 'Asadur', 'https://lh3.googleusercontent.com/a/AAcHTteD7Ajrkmz3zjIxZZQiQEpfRsUOKaL_flBPr_hPAT15=s96-c');
+INSERT INTO users (id, email, name, given_name, image_url)VALUES ('100316119636052029906', 'judahbelgrave@gmail.com', 'Judah Belgrave', 'Judah', 'https://lh3.googleusercontent.com/a/AAcHTtd3_k21UcuYCM0u1tpDo55e4AsFOT2L90ku0gmsvs1V3g=s96-c');
+INSERT INTO users (id, email, name, given_name, image_url)VALUES ('100019475106698487853', 'julietvorbe11@gmail.com', 'Juliet Vorbe', 'Juliet', 'https://lh3.googleusercontent.com/a/AAcHTtedg_s6aciR9CIx5ErLWauOVrB5583ho_Pc46SC1YeU04Q=s96-c');
 
 --Saved Trips Table
-INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Bali', 3, 1, '2020-08-15');
-INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Paris', 1, 2, '2023-08-11');
-INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Singapore', 33, 1, '2024-03-25');
+INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Bali', 3, 'googleid1', '2020-08-15');
+INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Paris', 1, 'googleid2', '2023-08-11');
+INSERT INTO saved_trips (id, name, destination_id, user_id, date) VALUES (DEFAULT, 'Trip to Singapore', 33, 'googleid1', '2024-03-25');
 
 --Attractions-Trips Table
 INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 1, 2);
@@ -626,6 +632,6 @@ INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 3, 2)
 INSERT INTO attractions_trips(id, attraction_id, trip_id) VALUES (DEFAULT, 8, 1);
 
 --Matching user id with Saved Trip
-INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 1);
-INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 2, 2);
-INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 3, 1);
+INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 1, 'googleid1');
+INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 2, 'googleid2');
+INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, 3, 'googleid1');
