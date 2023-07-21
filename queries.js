@@ -152,7 +152,7 @@ const addToTrip = (req,res)=>{
 
 const getTrips = (req,res)=>{
     const {user_id} = req.params
-    pool.query(`SELECT * FROM saved_trips JOIN attractions_trips ON attractions_trips.trip_id = saved_trips.id JOIN attractions ON attractions.id = attractions_trips.attraction_id JOIN destinations ON destinations.id = saved_trips.destination_id JOIN users_saved_trips ON users_saved_trips.user_id = saved_trips.user_id WHERE saved_trips.user_id = $1;`,[user_id])
+    pool.query(`SELECT saved_trips.name,  attractions.name as attraction, saved_trips.date, saved_trips.user_id FROM saved_trips JOIN attractions_trips ON attractions_trips.trip_id = saved_trips.id JOIN attractions ON attractions.id = attractions_trips.attraction_id JOIN destinations ON destinations.id = saved_trips.destination_id JOIN users_saved_trips ON users_saved_trips.user_id = saved_trips.user_id WHERE saved_trips.user_id = $1;`,[user_id])
     .then((results,error)=>{
         if(error){
             throw error;
