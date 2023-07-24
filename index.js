@@ -14,6 +14,7 @@ app.get('/:tableName/:id',db.getDataById)
 app.post('/login/:id',db.validateUser)
 app.post('/trip', db.addToTrip)
 app.post('/:tableName',db.addData)
+app.post('/createTrip/:user_id',db.createTrip)
 app.delete('/:tableName/:id',db.deleteData)
 app.put('/:tableName/:id',db.updateData)
 app.listen(port, ()=>{

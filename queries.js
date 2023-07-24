@@ -172,6 +172,25 @@ const getTripsByUserId = (req,res)=>{
     })
 };
 
+const createTrip = (req,res)=>{
+    const {user_id} = req.params
+
+    const keys = Object.keys(req.body).join(', ')
+    const values = Object.values(req.body)
+    console.log(values)
+    const psqlinsert = values.map((key,index)=>`$${index+1}`).join(', ')
+    console.log(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`)
+    pool.query(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`,
+    values, (error, results)=>{
+       if(error){
+           throw error;
+       }
+       pool.query(`INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, user_id])
+       res.status(200).json(results.rows)
+    })
+
+};
+
 module.exports = {
     getData,
     getDataById,
@@ -181,5 +200,6 @@ module.exports = {
     updateData,
     addToTrip,
     getTripsAndAttractions,
-    getTripsByUserId
+    getTripsByUserId,
+    createTrip
 }
