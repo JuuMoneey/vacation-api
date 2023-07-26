@@ -174,24 +174,76 @@ const getTripsByUserId = (req,res)=>{
     })
 };
 
-const createTrip = (req,res)=>{
-    const {user_id} = req.params
+// const createTrip = (req,res)=>{
+//     const {user_id} = req.params
+// console.log(req.body)
+//     const keys = Object.keys(req.body).join(', ')
+//     const values = Object.values(req.body)
+//     console.log(values)
+//     const psqlinsert = values.map((key,index)=>`$${index+1}`).join(', ')
+    
+//     pool.query(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`)
+//     .then((results,error)=>{
+//         if(error){
+//             throw error;
+//         }
+//         console.log("HERE", results.rows[0].id, user_id)
+//         pool.query(`INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, user_id])
+//         .then((results,error)=>{
+//             if(error){
+//                 throw error;
+//             }
+//         })
+//         res.status(200).json(results.rows)
+//     })
+const createTrip = (req, res) => {
+    const { user_id } = req.params;
+    console.log(req.body);
+    const keys = Object.keys(req.body).join(', ');
+    const values = Object.values(req.body);
+    console.log(values);
+    const psqlinsert = values.map((key, index) => `$${index + 1}`).join(', ');
+  
+    pool.query(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`)
+      .then((results, error) => {
+        if (error) {
+          throw error;
+        }
+        const tripId = results.rows[0].id; // Get the generated trip ID
+  
+        pool.query(`INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [tripId, user_id])
+          .then((userSavedTripResults, userSavedTripError) => {
+            if (userSavedTripError) {
+              throw userSavedTripError;
+            }
+  
+            // Return the response inside this block
+            res.status(200).json(userSavedTripResults.rows);
+          })
+          .catch((userSavedTripError) => {
+            // Handle errors for the second query
+            console.error(userSavedTripError);
+            res.status(500).json({ error: "Error creating user saved trip." });
+          });
+      })
+      .catch((error) => {
+        // Handle errors for the first query
+        console.error(error);
+        res.status(500).json({ error: "Error creating trip." });
+      });
+  };
+  
 
-    const keys = Object.keys(req.body).join(', ')
-    const values = Object.values(req.body)
-    console.log(values)
-    const psqlinsert = values.map((key,index)=>`$${index+1}`).join(', ')
-    console.log(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`)
-    pool.query(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`,
-    values, (error, results)=>{
-       if(error){
-           throw error;
-       }
-       pool.query(`INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, user_id])
-       res.status(200).json(results.rows)
-    })
+    // pool.query(`INSERT INTO saved_trips (${keys}) VALUES (${psqlinsert}) RETURNING *;`,
+    // values, (error, results)=>{
+    //    if(error){
+    //        throw error;
+    //    }
+    //    pool.query(`INSERT INTO users_saved_trips (id, trip_id, user_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, user_id])
+    //    res.status(200).json(results.rows)
+    // })
 
-};
+// };
 
 module.exports = {
     getData,
