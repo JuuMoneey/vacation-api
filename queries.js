@@ -124,12 +124,13 @@ const updateData = (req,res)=>{
 };
 
 const addToTrip = (req,res)=>{
+    console.log('ADD to trip', req.body)
     const {name, general_cost, destination_id, trip_id} = req.body
     pool.query(`SELECT * FROM attractions WHERE name = $1;`,[name])
         .then((results) => {
             if (results.rows.length) {
-                res.status(200).json(results.rows)
-                console.log(results.rows)
+                // res.status(200).json(results.rows)
+                console.log("Exists","attractionID:", results.rows[0].id)
                 pool.query(`INSERT INTO attractions_trips (id, attraction_id, trip_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, trip_id])
                 .then((results,error)=>{
                     if(error){
@@ -143,8 +144,9 @@ const addToTrip = (req,res)=>{
                     if(error){
                         throw error;
                     }
-                    res.status(200).json(results.rows)
+                    console.log("didnt Exists","attractionID:", results.rows[0].id)
                     pool.query(`INSERT INTO attractions_trips (id, attraction_id, trip_id) VALUES (DEFAULT, $1, $2) RETURNING *;`, [results.rows[0].id, trip_id])
+                    res.status(200).json(results.rows)
                 })
             }
         })
